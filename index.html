@@ -15,7 +15,8 @@
       --shadow:0 4px 24px rgba(13,47,94,0.10); --radius:14px;
     }
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-    body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text-dark);min-height:100vh;padding-bottom:80px;}
+    html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;}
+    body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text-dark);min-height:100vh;padding-bottom:80px;-webkit-tap-highlight-color:transparent;}
 
     /* ── HEADER ── */
     header{background:linear-gradient(135deg,var(--blue-dark) 0%,var(--blue-mid) 60%,var(--green-dark) 100%);padding:22px 32px;display:flex;align-items:center;gap:16px;box-shadow:0 4px 20px rgba(13,47,94,0.25);position:relative;overflow:hidden;}
@@ -114,20 +115,51 @@
     .error-banner{background:#fff0f0;border:1px solid #fca5a5;border-radius:9px;padding:13px 17px;color:#b91c1c;font-size:0.84rem;font-weight:600;display:none;margin-bottom:14px;}
     .error-banner.show{display:block;}
 
+    /* ── SCROLL HINT (mobile only) ── */
+    .scroll-hint{display:none;}
+    @media(max-width:700px){ .scroll-hint{display:block;} }
+
     /* ── LIVE PILL ── */
     .live-pill{display:inline-flex;align-items:center;gap:6px;background:var(--green-pale);color:var(--green-dark);font-size:0.7rem;font-weight:700;padding:4px 10px;border-radius:20px;letter-spacing:0.3px;margin-left:auto;}
     .live-dot{width:7px;height:7px;border-radius:50%;background:var(--green-mid);animation:pulse 1.6s ease-in-out infinite;}
     @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(0.7)}}
 
     /* ── SUCCESS POPUP ── */
-    .popup-overlay{display:none;position:fixed;inset:0;background:rgba(13,30,60,0.45);backdrop-filter:blur(4px);z-index:500;align-items:center;justify-content:center;}
+    /* ── SUCCESS CARD POPUP ── */
+    .popup-overlay{display:none;position:fixed;inset:0;background:rgba(13,30,60,0.55);backdrop-filter:blur(5px);z-index:500;align-items:center;justify-content:center;padding:16px;}
     .popup-overlay.show{display:flex;}
-    .popup-box{background:#fff;border-radius:18px;padding:36px 44px;text-align:center;box-shadow:0 20px 60px rgba(13,47,94,0.25);animation:popIn .3s cubic-bezier(.34,1.56,.64,1) forwards;max-width:360px;width:90%;}
     @keyframes popIn{from{transform:scale(0.7);opacity:0}to{transform:scale(1);opacity:1}}
-    .popup-icon{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,var(--green-mid),var(--blue-mid));display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:30px;box-shadow:0 8px 24px rgba(5,150,105,0.3);}
-    .popup-box h3{font-size:1.25rem;font-weight:800;color:var(--blue-dark);margin-bottom:6px;}
-    .popup-box p{color:var(--text-muted);font-size:0.86rem;margin-bottom:22px;}
-    .btn-ok{padding:10px 34px;background:linear-gradient(135deg,var(--blue-mid),var(--green-mid));color:#fff;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.88rem;font-weight:700;border:none;border-radius:9px;cursor:pointer;box-shadow:0 4px 14px rgba(26,86,160,0.25);transition:transform .15s;}
+
+    .success-card{background:#fff;border-radius:20px;width:100%;max-width:420px;box-shadow:0 24px 60px rgba(13,47,94,0.28);animation:popIn .3s cubic-bezier(.34,1.56,.64,1) forwards;overflow:hidden;}
+
+    /* Top banner */
+    .sc-banner{background:linear-gradient(135deg,var(--blue-dark) 0%,var(--blue-mid) 55%,var(--green-dark) 100%);padding:22px 22px 18px;text-align:center;position:relative;}
+    .sc-banner::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:18px;background:#fff;border-radius:18px 18px 0 0;}
+    .sc-check{width:58px;height:58px;border-radius:50%;background:linear-gradient(135deg,var(--green-mid),var(--green-dark));display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:28px;box-shadow:0 6px 20px rgba(5,150,105,0.4);}
+    .sc-banner h3{color:#fff;font-size:1.15rem;font-weight:800;margin-bottom:2px;}
+    .sc-banner p{color:rgba(255,255,255,0.75);font-size:0.75rem;}
+
+    /* Details grid */
+    .sc-body{padding:18px 18px 0;}
+    .sc-meta{display:flex;gap:8px;margin-bottom:10px;}
+    .sc-meta-item{flex:1;background:linear-gradient(135deg,#f0f7ff,#f0fdf4);border:1px solid var(--border);border-radius:10px;padding:10px 12px;text-align:center;}
+    .sc-meta-item .sm-label{font-size:0.65rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.4px;margin-bottom:2px;}
+    .sc-meta-item .sm-val{font-size:0.95rem;font-weight:800;color:var(--blue-dark);}
+
+    /* Stats table */
+    .sc-table{width:100%;border-collapse:collapse;font-size:0.82rem;margin-bottom:10px;}
+    .sc-table tr{border-bottom:1px solid #edf2fb;}
+    .sc-table tr:last-child{border-bottom:none;}
+    .sc-table td{padding:8px 10px;}
+    .sc-table td:first-child{color:var(--text-muted);font-weight:600;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.3px;width:46%;}
+    .sc-table td:last-child{color:var(--blue-dark);font-weight:700;text-align:right;}
+    .sc-remark{background:#f8fbff;border:1px solid var(--border);border-radius:9px;padding:9px 12px;margin-bottom:14px;}
+    .sc-remark .sr-label{font-size:0.65rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.4px;margin-bottom:3px;}
+    .sc-remark .sr-val{font-size:0.83rem;color:var(--text-dark);line-height:1.5;}
+
+    /* Footer buttons */
+    .sc-footer{padding:0 18px 18px;display:flex;gap:8px;}
+    .btn-ok{flex:1;padding:12px;background:linear-gradient(135deg,var(--blue-mid),var(--green-mid));color:#fff;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.88rem;font-weight:700;border:none;border-radius:10px;cursor:pointer;box-shadow:0 4px 14px rgba(26,86,160,0.22);transition:transform .15s;}
     .btn-ok:hover{transform:translateY(-2px);}
 
     /* ── CONFIRM PREVIEW MODAL ── */
@@ -153,22 +185,103 @@
     .btn-confirm:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(26,86,160,0.28);}
     .btn-confirm:disabled{opacity:.6;cursor:not-allowed;transform:none;}
 
-    /* ── RESPONSIVE ── */
+    /* ══ MOBILE-FIRST RESPONSIVE ══ */
+
+    /* Tap targets — min 44px on all interactive elements */
+    button,input,select,textarea{touch-action:manipulation;}
+    .field input,.field select,.field textarea{font-size:16px !important; /* prevent iOS zoom */}
+
     @media(max-width:700px){
-      body{padding-bottom:72px;}
-      .tab-bar,.bottom-nav~.tab-bar{display:none;}
+      /* ── Layout ── */
+      body{padding-bottom:76px;}
+      .tab-bar{display:none;}
       .bottom-nav{display:block;}
-      main{border-top:none;padding-top:0;}
-      .tab-panel.active{padding-top:20px;}
-      header{padding:16px 18px;}
-      header h1{font-size:1.15rem;}
-      .card-body{padding:16px;}
-      .form-row,.form-row.three{grid-template-columns:1fr;}
+      main{border-top:none;padding:0 12px 20px;}
+      .tab-panel.active{padding-top:16px;gap:16px;}
+
+      /* ── Header ── */
+      header{padding:14px 16px;gap:12px;}
+      header h1{font-size:1.05rem;}
+      header p{font-size:0.72rem;}
+      .header-icon{width:40px;height:40px;font-size:20px;}
+
+      /* ── Cards ── */
+      .card{border-radius:12px;}
+      .card-header{padding:14px 16px 12px;gap:10px;}
+      .card-header h2{font-size:0.92rem;}
+      .ch-icon{width:30px;height:30px;font-size:15px;}
+      .card-body{padding:14px;}
+      .live-pill{font-size:0.65rem;padding:3px 8px;}
+
+      /* ── Form ── */
+      .form-row,.form-row.three{grid-template-columns:1fr;gap:12px;margin-bottom:12px;}
+      .field label{font-size:0.72rem;}
+      .field input,.field select{padding:12px 13px;border-radius:8px;}
+      .field textarea{min-height:64px;padding:11px 13px;}
+      .divider-label{margin:16px 0 12px;font-size:0.68rem;}
+      .btn-submit{padding:15px;font-size:0.95rem;border-radius:10px;margin-top:4px;}
+
+      /* ── Summary cards — 3 per row on mobile ── */
+      .report-summary{grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px;}
+      .summary-card{padding:10px 8px;border-radius:9px;}
+      .summary-card .sc-val{font-size:1.4rem;}
+      .summary-card .sc-label{font-size:0.6rem;margin-top:3px;}
+
+      /* ── Filter bar ── */
+      .filter-bar{flex-direction:column;gap:10px;padding:14px;margin-bottom:16px;}
+      .filter-bar .field{min-width:unset;width:100%;}
+      .btn-apply{width:100%;padding:13px;font-size:0.92rem;text-align:center;}
+
+      /* ── Charts ── */
+      .charts-grid{grid-template-columns:1fr;gap:12px;margin-bottom:16px;}
+      .chart-card{padding:14px;border-radius:10px;}
+      .chart-card h3{font-size:0.75rem;margin-bottom:10px;}
+      .chart-wrap{height:180px;}
+      .chart-toggle-bar{gap:6px;margin-bottom:12px;}
+      .chart-type-btn{padding:6px 14px;font-size:0.75rem;}
+
+      /* ── Tables — horizontal scroll with hint ── */
+      .table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:0 0 10px 10px;}
+      table{font-size:0.78rem;min-width:560px;}
+      thead th{padding:10px 10px;}
+      tbody td{padding:9px 10px;}
+
+      /* ── Confirm preview modal ── */
+      .confirm-overlay{padding:10px;align-items:flex-end;}
+      .confirm-box{width:100%;max-width:100%;border-radius:20px 20px 16px 16px;max-height:90vh;overflow-y:auto;}
+      .confirm-header{padding:16px 18px;}
+      .confirm-header h3{font-size:0.98rem;}
+      .confirm-body{padding:14px 16px;}
+      .preview-grid{grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;}
+      .preview-item{padding:9px 11px;}
+      .preview-item .pi-val{font-size:0.88rem;}
+      .confirm-actions{gap:8px;}
+      .btn-cancel,.btn-confirm{padding:13px;font-size:0.88rem;}
+
+      /* ── Success card ── */
+      .popup-overlay{padding:10px;align-items:flex-end;}
+      .success-card{max-width:100%;border-radius:20px 20px 16px 16px;max-height:88vh;overflow-y:auto;}
+      .sc-banner{padding:18px 18px 16px;}
+      .sc-check{width:50px;height:50px;font-size:24px;}
+      .sc-banner h3{font-size:1.05rem;}
+      .sc-body{padding:14px 14px 0;}
+      .sc-meta{gap:6px;margin-bottom:8px;}
+      .sc-meta-item{padding:9px 10px;}
+      .sc-meta-item .sm-val{font-size:0.88rem;}
+      .sc-table td{padding:7px 8px;}
+      .sc-footer{padding:0 14px 14px;}
+      .btn-ok{padding:13px;}
+
+      /* ── Bottom nav ── */
+      .nav-item{padding:9px 4px 11px;font-size:0.66rem;}
+      .nav-item .nav-icon{font-size:22px;}
+    }
+
+    /* Small phones */
+    @media(max-width:380px){
       .report-summary{grid-template-columns:repeat(2,1fr);}
-      .filter-bar{flex-direction:column;}
-      .charts-grid{grid-template-columns:1fr;}
       .preview-grid{grid-template-columns:1fr;}
-      .confirm-box{width:96%;}
+      header h1{font-size:0.95rem;}
     }
   </style>
 </head>
@@ -273,6 +386,7 @@
         <span class="live-pill"><span class="live-dot"></span>Live · Google Sheets</span>
       </div>
       <div class="card-body" style="padding:0">
+        <div style="font-size:0.68rem;color:var(--text-muted);text-align:right;padding:6px 14px 0;font-weight:600;letter-spacing:0.3px;" class="scroll-hint">← scroll →</div>
         <div id="todayTableWrap" class="table-wrap">
           <div class="spinner-wrap"><div class="spinner"></div><span>Loading today's entries…</span></div>
         </div>
@@ -355,6 +469,7 @@
         </div>
 
         <!-- TABLE -->
+        <div style="font-size:0.68rem;color:var(--text-muted);text-align:right;padding:0 4px 4px;font-weight:600;letter-spacing:0.3px;" class="scroll-hint">← scroll →</div>
         <div id="reportTableWrap" class="table-wrap">
           <div class="spinner-wrap"><div class="spinner"></div><span>Loading data…</span></div>
         </div>
@@ -366,13 +481,44 @@
 
 </main>
 
-<!-- ── SUCCESS POPUP ── -->
+<!-- ── SUCCESS CARD POPUP ── -->
 <div class="popup-overlay" id="popupOverlay">
-  <div class="popup-box">
-    <div class="popup-icon">✅</div>
-    <h3>Successfully Submitted!</h3>
-    <p>Your daily sales report has been saved to Google Sheets.</p>
-    <button class="btn-ok" onclick="closePopup()">Great, Thanks!</button>
+  <div class="success-card" id="successCard">
+    <div class="sc-banner">
+      <div class="sc-check">✅</div>
+      <h3>Successfully Submitted!</h3>
+      <p>Saved to Google Sheets · <span id="scTimestamp"></span></p>
+    </div>
+    <div class="sc-body">
+      <!-- Date + Employee -->
+      <div class="sc-meta">
+        <div class="sc-meta-item">
+          <div class="sm-label">Date</div>
+          <div class="sm-val" id="scDate">—</div>
+        </div>
+        <div class="sc-meta-item">
+          <div class="sm-label">Employee</div>
+          <div class="sm-val" id="scEmployee">—</div>
+        </div>
+      </div>
+      <!-- Numbers table -->
+      <table class="sc-table">
+        <tr><td>Total Calls</td>    <td id="scCalls">—</td></tr>
+        <tr><td>Total Visits</td>   <td id="scVisits">—</td></tr>
+        <tr><td>Leads</td>          <td id="scLeads">—</td></tr>
+        <tr><td>Follow Ups</td>     <td id="scFollowUp">—</td></tr>
+        <tr><td>Client Meetings</td><td id="scMeetings">—</td></tr>
+        <tr><td>Closer</td>         <td id="scCloser">—</td></tr>
+      </table>
+      <!-- Remark -->
+      <div class="sc-remark">
+        <div class="sr-label">Remark</div>
+        <div class="sr-val" id="scRemark">—</div>
+      </div>
+    </div>
+    <div class="sc-footer">
+      <button class="btn-ok" onclick="closePopup()">✓ Done</button>
+    </div>
   </div>
 </div>
 
@@ -401,7 +547,7 @@
 // ══════════════════════════════════════════════════════════════
 //  ⚙️  PASTE YOUR DEPLOYED APPS SCRIPT WEB APP URL HERE
 // ══════════════════════════════════════════════════════════════
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz2fQfCS9uaeHIFTAW6hYq4SAENC6rGtaRR0VE-RxMTwQ71Pn3GgebsNAK3koHjzQsB/exec';
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzwrF4a9UFjvG7ppdi6sZWLl4nyC1hjjpQ3SsOg6onGetjrvMNnGQ3PRkEzCnr78hFD/exec';
 
 let pendingEntry  = null;   // entry waiting for confirmation
 let currentRows   = [];     // last fetched report rows
@@ -506,7 +652,7 @@ async function doSubmit() {
   btn.disabled = false;
   btn.textContent = '✅ Confirm & Submit';
   pendingEntry = null;
-  showPopup();
+  showPopup(pendingEntry);
   if (isConfigured()) setTimeout(() => { loadTodayTable(); if (reportLoaded) loadReport(); }, 2200);
 }
 
@@ -745,7 +891,23 @@ function fmtDate(d)     { return `${d.getFullYear()}-${String(d.getMonth()+1).pa
 function shortDate(d)   { return d.toLocaleString('default',{day:'numeric',month:'short'}); }
 function resetSummary(zero) { ['rCalls','rVisits','rLeads','rFollowUp','rMeetings','rEntries'].forEach(id=>document.getElementById(id).textContent=zero?'0':'—'); }
 function showError(msg) { const el=document.getElementById('errorBanner'); el.textContent=msg; el.classList.add('show'); }
-function showPopup()    { document.getElementById('popupOverlay').classList.add('show'); }
+function showPopup(entry) {
+  if (entry) {
+    document.getElementById('scDate').textContent     = entry.date       || '—';
+    document.getElementById('scEmployee').textContent = entry.employee   || '—';
+    document.getElementById('scCalls').textContent    = entry.totalCalls;
+    document.getElementById('scVisits').textContent   = entry.totalVisits;
+    document.getElementById('scLeads').textContent    = entry.leads;
+    document.getElementById('scFollowUp').textContent = entry.followUp;
+    document.getElementById('scMeetings').textContent = entry.clientMeetings;
+    document.getElementById('scCloser').textContent   = entry.closer     || '—';
+    document.getElementById('scRemark').textContent   = entry.remark     || 'No remark';
+    const now = new Date();
+    document.getElementById('scTimestamp').textContent =
+      now.toLocaleTimeString('default',{hour:'2-digit',minute:'2-digit'});
+  }
+  document.getElementById('popupOverlay').classList.add('show');
+}
 function closePopup()   { document.getElementById('popupOverlay').classList.remove('show'); }
 document.getElementById('popupOverlay').addEventListener('click',e=>{ if(e.target===e.currentTarget) closePopup(); });
 document.getElementById('confirmOverlay').addEventListener('click',e=>{ if(e.target===e.currentTarget) closeConfirm(); });
