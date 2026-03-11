@@ -651,8 +651,8 @@ async function doSubmit() {
   document.getElementById('entryDate').value = todayStr();
   btn.disabled = false;
   btn.textContent = '✅ Confirm & Submit';
-  pendingEntry = null;
   showPopup(pendingEntry);
+  pendingEntry = null;
   if (isConfigured()) setTimeout(() => { loadTodayTable(); if (reportLoaded) loadReport(); }, 2200);
 }
 
