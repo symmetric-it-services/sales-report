@@ -752,9 +752,13 @@ function setChartType(type) {
 }
 
 function buildCharts(rows, type) {
-  // Use employee labels if multiple, else dates
-  const labels = rows.map(r => r.employee && rows.filter(x=>x.employee===r.employee).length < rows.length
-    ? `${r.employee} (${r.date})` : r.date);
+  // Charts should go oldest → newest (left to right), table is newest first
+  const sorted = [...rows].reverse();
+  // Label: show date always (clean for chart axis)
+  const labels = sorted.map(r => {
+    const [y,m,d] = r.date.split('-');
+    return `${d}/${m}/${y.slice(2)}`; // e.g. 11/03/26
+  });
 
   const sharedOpts = {
     responsive:true, maintainAspectRatio:false,
@@ -775,8 +779,8 @@ function buildCharts(rows, type) {
     data:{
       labels,
       datasets:[
-        { label:'Calls',  data:rows.map(r=>r.totalCalls),  backgroundColor: type==='bar'?'rgba(26,86,160,0.75)' :'rgba(26,86,160,0)',  borderColor:'#1a56a0', borderWidth:2, fill: type==='line', tension:0.4, pointRadius:4 },
-        { label:'Visits', data:rows.map(r=>r.totalVisits), backgroundColor: type==='bar'?'rgba(5,150,105,0.7)'  :'rgba(5,150,105,0)',  borderColor:'#059669', borderWidth:2, fill: type==='line', tension:0.4, pointRadius:4 },
+        { label:'Calls',  data:sorted.map(r=>r.totalCalls),  backgroundColor: type==='bar'?'rgba(26,86,160,0.75)' :'rgba(26,86,160,0)',  borderColor:'#1a56a0', borderWidth:2, fill: type==='line', tension:0.4, pointRadius:4 },
+        { label:'Visits', data:sorted.map(r=>r.totalVisits), backgroundColor: type==='bar'?'rgba(5,150,105,0.7)'  :'rgba(5,150,105,0)',  borderColor:'#059669', borderWidth:2, fill: type==='line', tension:0.4, pointRadius:4 },
       ]
     },
     options:{ ...sharedOpts }
@@ -790,9 +794,9 @@ function buildCharts(rows, type) {
     data:{
       labels,
       datasets:[
-        { label:'Leads',    data:rows.map(r=>r.leads),          backgroundColor: type==='bar'?'rgba(59,130,246,0.75)':'rgba(59,130,246,0)',  borderColor:'#3b82f6', borderWidth:2, fill:type==='line', tension:0.4, pointRadius:4 },
-        { label:'Follow Up',data:rows.map(r=>r.followUp),       backgroundColor: type==='bar'?'rgba(245,158,11,0.75)':'rgba(245,158,11,0)',  borderColor:'#f59e0b', borderWidth:2, fill:type==='line', tension:0.4, pointRadius:4 },
-        { label:'Meetings', data:rows.map(r=>r.clientMeetings), backgroundColor: type==='bar'?'rgba(16,185,129,0.7)':'rgba(16,185,129,0)',   borderColor:'#10b981', borderWidth:2, fill:type==='line', tension:0.4, pointRadius:4 },
+        { label:'Leads',    data:sorted.map(r=>r.leads),          backgroundColor: type==='bar'?'rgba(59,130,246,0.75)':'rgba(59,130,246,0)',  borderColor:'#3b82f6', borderWidth:2, fill:type==='line', tension:0.4, pointRadius:4 },
+        { label:'Follow Up',data:sorted.map(r=>r.followUp),       backgroundColor: type==='bar'?'rgba(245,158,11,0.75)':'rgba(245,158,11,0)',  borderColor:'#f59e0b', borderWidth:2, fill:type==='line', tension:0.4, pointRadius:4 },
+        { label:'Meetings', data:sorted.map(r=>r.clientMeetings), backgroundColor: type==='bar'?'rgba(16,185,129,0.7)':'rgba(16,185,129,0)',   borderColor:'#10b981', borderWidth:2, fill:type==='line', tension:0.4, pointRadius:4 },
       ]
     },
     options:{ ...sharedOpts }
